@@ -1,0 +1,71 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Duosida EV Charger setup",
+        "description": "Choose how to add your charger.",
+        "data": {
+          "discovery": "Auto-discover chargers on network"
+        },
+        "data_description": {
+          "discovery": "Enable automatic discovery of chargers on your local network"
+        }
+      },
+      "discovery": {
+        "title": "Select charger",
+        "description": "Select your charger from the list.",
+        "data": {
+          "device": "Charger"
+        },
+        "data_description": {
+          "device": "Select the charger you want to add from the list of discovered devices"
+        }
+      },
+      "discovery_confirm": {
+        "title": "Discovered Duosida EV charger",
+        "description": "A Duosida EV charger was found at {host} (ID: {device_id}). Do you want to add it?"
+      },
+      "manual": {
+        "title": "Manual configuration",
+        "description": "Enter your charger details.",
+        "data": {
+          "host": "IP address",
+          "port": "Port",
+          "device_id": "Device ID (optional)"
+        },
+        "data_description": {
+          "host": "The IP address of your Duosida charger",
+          "port": "The port number for communication (default: 9988)",
+          "device_id": "The device ID printed on your charger (if known)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to charger",
+      "no_devices_found": "No chargers found on network"
+    },
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options",
+        "data": {
+          "switch_debounce": "Charging switch debounce (seconds)"
+        },
+        "data_description": {
+          "switch_debounce": "How long to hold the charging switch state after sending a command (prevents UI bounce)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "charging": {
+        "name": "Charging"
+      }
+    }
+  }
+}
