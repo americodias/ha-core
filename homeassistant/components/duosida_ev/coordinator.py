@@ -78,6 +78,7 @@ class DuosidaDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         }
 
         self._settings_synced_this_session = False
+        self._unavailable_logged = False
 
     async def async_load_stored_settings(self) -> None:
         """Load stored settings from Home Assistant storage."""
@@ -180,9 +181,23 @@ class DuosidaDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         connected = await self._async_connect_with_retry()
 
         if not connected:
+            if not self._unavailable_logged:
+                _LOGGER.info(
+                    "Duosida charger %s is unavailable",
+                    self.charger.host,
+                )
+                self._unavailable_logged = True
             raise UpdateFailed(
                 f"Failed to connect to charger after {MAX_RETRY_ATTEMPTS} attempts"
             )
+
+        # Log recovery if we were previously unavailable
+        if self._unavailable_logged:
+            _LOGGER.info(
+                "Duosida charger %s is back online",
+                self.charger.host,
+            )
+            self._unavailable_logged = False
 
         try:
             await asyncio.sleep(0.3)
